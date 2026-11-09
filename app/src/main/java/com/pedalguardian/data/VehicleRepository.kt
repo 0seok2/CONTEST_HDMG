@@ -80,6 +80,13 @@ class VehicleRepository(private val context: Context) {
             .onFailure { Log.e(TAG, "이상 구간 저장 실패", it) }
     }
 
+    /** 보존된 이상 구간 파일 목록 (최신순). */
+    fun savedSegments(): List<File> =
+        context.filesDir.listFiles { f -> f.name.startsWith("anomaly_") }?.sortedByDescending { it.name } ?: emptyList()
+
+    fun loadSegment(file: File): List<PedalSample> =
+        runCatching { PedalLog.fromCsv(file.readText()) }.getOrDefault(emptyList())
+
     companion object {
         private const val TAG = "VehicleRepository"
     }

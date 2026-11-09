@@ -57,4 +57,10 @@ class PedalLogTest {
         }
         assertEquals(1, count)
     }
+
+    @Test
+    fun CSV로_저장하고_다시_읽으면_같다() {
+        val samples = listOf(s(0, false, 10f), s(100, true, 12.5f))
+        assertEquals(samples, PedalLog.fromCsv(PedalLog.toCsv(samples)))
+    }
 }

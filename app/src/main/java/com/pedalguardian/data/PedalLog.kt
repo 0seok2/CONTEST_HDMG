@@ -66,5 +66,14 @@ class PedalLog(
             appendLine("timeMs,brake,accel,speedKmh")
             samples.forEach { appendLine("${it.timeMs},${it.brake},${it.accel},${it.speedKmh}") }
         }
+
+        /** [toCsv]로 저장한 파일을 다시 읽는다. 깨진 줄은 건너뛴다. */
+        fun fromCsv(csv: String): List<PedalSample> = csv.lineSequence().drop(1).mapNotNull { line ->
+            val c = line.split(",")
+            if (c.size != 4) return@mapNotNull null
+            val t = c[0].toLongOrNull() ?: return@mapNotNull null
+            val v = c[3].toFloatOrNull() ?: return@mapNotNull null
+            PedalSample(t, c[1].toBoolean(), c[2].toBoolean(), v)
+        }.toList()
     }
 }

@@ -22,6 +22,8 @@
 | `data/VehicleRepository.kt` | 차속(AAOS `CarPropertyManager`)·브레이크 신호 → `StateFlow`, 이상 구간 CSV 저장 |
 | `data/PedalLog.kt` | 순환 버퍼 + 이상 구간 판정 (순수 Kotlin, 단위 테스트 있음) |
 | `ui/PedalIndicator.kt` | 구석 페달 표시 (브레이크: 연한 빨강, 가속: 연한 초록) |
+| `ui/HistoryScreen.kt` | 정차 중 기록 조회: 최근 30초·보존된 이상 구간을 시간축 그래프로 |
+| `ui/SettingsScreen.kt` | 정차 중 표시 위치·크기·투명도 설정 |
 
 앱은 차량을 제어하지 않는다. 읽기 전용이다.
 
