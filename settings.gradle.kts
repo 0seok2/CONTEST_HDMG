@@ -9,5 +9,5 @@ dependencyResolutionManagement {
         maven { url = uri("https://nexus-playground.pleos.ai/repository/maven-releases/") }
     }
 }
-rootProject.name = "PedalGuardian"
+rootProject.name = "FootNote"
 include(":app")

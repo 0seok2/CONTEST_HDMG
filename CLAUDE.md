@@ -1,4 +1,4 @@
-# 페달 가디언 (Pedal Guardian) — 프로젝트 인계 문서
+# 풋노트 (FootNote, 구 페달 가디언) — 프로젝트 인계 문서
 
 > 현대자동차그룹 차량용 앱 개발 공모전(Pleos Playground) 출품작.
 > Claude Code가 이 파일을 읽고 바로 개발을 이어갈 수 있도록 정리한 인계 문서다.

@@ -9,7 +9,7 @@
     <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
 
     <application
-        android:label="페달 가디언"
+        android:label="풋노트"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
         <activity
             android:name=".MainActivity"

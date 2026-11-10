@@ -1,4 +1,4 @@
-# 페달 가디언 (Pedal Guardian)
+# 풋노트 (FootNote)
 
 운전자가 밟고 있는 페달을 화면 구석에 조용히 표시하고, 그 입력을 기록하는 차량용 앱.
 현대자동차그룹 차량용 앱 개발 공모전(Pleos Playground) 출품작.
@@ -29,6 +29,6 @@
 
 ## APK 위치
 
-`apk/PedalGuardian_release.apk` (release 빌드)
+`apk/FootNote_release.apk` (release 빌드)
 
-설치: `adb install apk/PedalGuardian_release.apk`
+설치: `adb install apk/FootNote_release.apk`
