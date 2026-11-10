@@ -2,8 +2,12 @@ pluginManagement {
     repositories { google(); mavenCentral(); gradlePluginPortal() }
 }
 dependencyResolutionManagement {
-    repositories { google(); mavenCentral() }
-    // TODO: Pleos Vehicle SDK 저장소 주소를 확인하면 여기에 maven { url = uri("...") } 추가
+    repositories {
+        google()
+        mavenCentral()
+        // Pleos Vehicle SDK 저장소
+        maven { url = uri("https://nexus-playground.pleos.ai/repository/maven-releases/") }
+    }
 }
 rootProject.name = "PedalGuardian"
 include(":app")

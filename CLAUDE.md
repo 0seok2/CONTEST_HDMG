@@ -75,7 +75,7 @@
   ```
 - 문서
   - 개발 가이드: https://document.pleos.ai/en/docs/connect/guide/getting-started/application-development/setup-application-development-environment
-  - Vehicle SDK API: https://pleos.ai/playground/resources/en/api-reference/connect-sdk/Vehicle/intro
+  - Vehicle SDK API: https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/intro (JS 렌더링 페이지: 일반 fetch로는 빈 페이지, 브라우저/Playwright로 읽어야 함)
   - 튜토리얼(Vehicle SDK, Hilt 예제): https://pleos.ai/playground/resources/docs/pleos-tutorial/vehicle-sdk
 
 > SDK 클래스명과 메서드명은 위 API 레퍼런스에서 **반드시 확인하고** 쓴다. 추측해서 쓰지 않는다.
@@ -87,9 +87,9 @@
 
 | 기능 | API | 비고 |
 |---|---|---|
-| 브레이크 페달 상태 | Vehicle SDK – **Brake API** | 브레이크 페달·주차 브레이크 상태 조회 |
+| 브레이크 페달 상태 | Vehicle SDK – **Brake API** (연동 완료) | `ai.pleos.playground:Vehicle:2.3.2`, 저장소 `https://nexus-playground.pleos.ai/repository/maven-releases/`, 퍼미션 `pleos.car.permission.CAR_DRIVE`. `Vehicle(context).initialize()` → `getBrake()` → `checkBrakePedalStatusCapabilities` / `getCurrentBrakePedalStatus` / `registerBrakePedalStatus(BrakePedalStatusListener)` |
 | 차속·기어 | AAOS Car API (`CarPropertyManager`, 예: `PERF_VEHICLE_SPEED`) | 표준 데이터는 AAOS API를 쓰는 게 Pleos 정책 |
-| 가속 페달 | **미확인** | 공개 API 목록에 없다. 기술지원 답변 전까지 UI는 브레이크 중심, 가속 아이콘은 자리만 유지 |
+| 가속 페달 | **미확인** | Vehicle SDK v2.3.2 리스너 목록에도 없다(11/10 확인). 기술지원 답변 전까지 UI는 브레이크 중심, 가속 아이콘은 자리만 유지 |
 
 ---
 

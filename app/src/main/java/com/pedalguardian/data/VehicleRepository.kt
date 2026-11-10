@@ -5,7 +5,12 @@ import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import ai.pleos.playground.vehicle.Vehicle
+import ai.pleos.playground.vehicle.api.model.capability.AccessType
+import ai.pleos.playground.vehicle.listener.BrakePedalStatusListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
@@ -33,6 +38,24 @@ class VehicleRepository(private val context: Context) {
     private var car: Car? = null
     private var propertyManager: CarPropertyManager? = null
 
+    // Pleos Vehicle SDK: 브레이크 페달 상태
+    private val vehicle = Vehicle(context)
+    private var brakeRegistered = false
+
+    // SDK 콜백은 IPC 스레드에서 올 수 있으므로 메인 스레드로 넘겨서 처리한다.
+    // (차속 콜백도 메인 스레드라 PedalLog를 한 스레드에서만 만지게 된다)
+    private val main = Handler(Looper.getMainLooper())
+
+    private val brakeListener = object : BrakePedalStatusListener {
+        override fun onBrakePedalStatusUpdated(status: Boolean?) {
+            if (status != null) main.post { onBrake(status) } // null = 값 없음, 무시
+        }
+
+        override fun onFailed(e: Exception) {
+            Log.w(TAG, "브레이크 상태 구독 오류", e)
+        }
+    }
+
     // 차속 콜백. PERF_VEHICLE_SPEED 단위는 m/s.
     private val speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
         override fun onChangeEvent(value: CarPropertyValue<*>) {
@@ -52,19 +75,46 @@ class VehicleRepository(private val context: Context) {
         propertyManager = pm
         pm.registerCallback(speedCallback, VehiclePropertyIds.PERF_VEHICLE_SPEED, CarPropertyManager.SENSOR_RATE_NORMAL)
 
-        // TODO(Brake API): Pleos Vehicle SDK의 Brake API로 브레이크 페달 상태 콜백을 등록하고,
-        //  콜백에서 onBrake(pressed)를 부른다. 지원 여부는 checkXXXCapabilities 계열로 먼저 확인.
-        //  클래스·메서드 이름은 API 레퍼런스에서 확인한 뒤 쓴다(추측 금지).
+        startBrake()
+    }
+
+    /**
+     * 브레이크: ① 지원 여부 확인 → ② 현재 값 한 번 읽기 → ③ 변화 구독.
+     * 읽기 전용 API만 쓴다(set 계열은 호출하지 않는다).
+     */
+    private fun startBrake() {
+        vehicle.initialize()
+        val brake = vehicle.getBrake()
+        brake.checkBrakePedalStatusCapabilities(
+            onComplete = { config ->
+                val readable = config.accessType == AccessType.READ || config.accessType == AccessType.READ_WRITE
+                if (!readable) {
+                    Log.w(TAG, "이 차량은 브레이크 페달 상태를 지원하지 않음: ${config.accessType}")
+                    return@checkBrakePedalStatusCapabilities
+                }
+                brake.getCurrentBrakePedalStatus(
+                    onComplete = { status -> if (status != null) main.post { onBrake(status) } },
+                    onFailed = { Log.w(TAG, "브레이크 현재 값 읽기 실패", it) },
+                )
+                brake.registerBrakePedalStatus(brakeListener)
+                brakeRegistered = true
+            },
+            onFailed = { Log.w(TAG, "브레이크 지원 여부 확인 실패", it) },
+        )
     }
 
     fun stop() {
+        if (brakeRegistered) vehicle.getBrake().unregisterBrakePedalStatus(brakeListener)
+        brakeRegistered = false
+        vehicle.release()
+        main.removeCallbacksAndMessages(null)
         propertyManager?.unregisterCallback(speedCallback)
         car?.disconnect()
         propertyManager = null
         car = null
     }
 
-    /** Brake API 콜백에서 부른다. */
+    /** 브레이크 상태 반영 (메인 스레드에서 호출). */
     fun onBrake(pressed: Boolean) = update(_state.value.copy(brake = pressed))
 
     private fun update(new: PedalState) {

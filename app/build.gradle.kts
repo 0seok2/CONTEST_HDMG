@@ -37,6 +37,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose:1.9.3")
-    // TODO: Pleos Vehicle SDK 의존성 (API 레퍼런스에서 좌표 확인 후 추가)
+    // Pleos Vehicle SDK (Brake API)
+    implementation("ai.pleos.playground:Vehicle:2.3.2")
     testImplementation("junit:junit:4.13.2")
 }

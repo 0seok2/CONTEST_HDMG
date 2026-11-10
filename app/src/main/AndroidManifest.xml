@@ -3,7 +3,8 @@
 
     <!-- 차속 읽기 (AAOS 표준) -->
     <uses-permission android:name="android.car.permission.CAR_SPEED" />
-    <!-- TODO: Pleos Brake API 퍼미션 (API 레퍼런스에서 정확한 문자열 확인 후 추가) -->
+    <!-- 브레이크 페달 상태 읽기 (Pleos Vehicle SDK Brake API) -->
+    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />
 
     <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
 
