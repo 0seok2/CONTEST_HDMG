@@ -69,12 +69,13 @@
   - SDK Platforms → Show Package Details → API 34 아래 Pleos Connect System Image 체크 → 설치 후 Android Studio 재시작
   - Device Manager → Create device → Automotive → **Pleos Connect v2.1.0** 선택, RAM 4GB
   - Graphics는 **Hardware**, Boot는 **Cold boot** (Quick boot로 하면 VHAL을 쓸 수 없다)
-- **CRN 주입 필수**: Pleos Playground에서 My Project를 만들고, Project Info > Test Info의 CRN을 복사해서 넣는다.
+- **CRN 주입**: 에뮬레이터 **v2.1.0부터는 필요 없다**(공식 문서, 11/10 확인). 아래는 v2.0.x용 옛 절차.
   ```bash
   adb root on
   adb shell su 0 "echo 'propId: 554696961 areaId: 0 values: {CRN}' > /data/vendor/vsomeip/vhal_fifo"
   adb reboot
   ```
+- **버추얼 콘솔**: 에뮬레이터 실행 후 `adb forward tcp:8088 tcp:8088` → PC 브라우저에서 `http://127.0.0.1:8088/` (v2.1.0 이상 필요)
 - 문서
   - 개발 가이드: https://document.pleos.ai/en/docs/connect/guide/getting-started/application-development/setup-application-development-environment
   - Vehicle SDK API: https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/intro (JS 렌더링 페이지: 일반 fetch로는 빈 페이지, 브라우저/Playwright로 읽어야 함)
