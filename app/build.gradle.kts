@@ -17,6 +17,13 @@ android {
         versionCode = 1
         versionName = "0.1"
     }
+    buildTypes {
+        release {
+            // 공모전 심사용: 별도 키 없이 바로 설치되도록 디버그 키로 서명한다.
+            // ponytail: App Market 배포 때는 전용 키스토어로 바꿔야 한다.
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

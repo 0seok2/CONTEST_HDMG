@@ -29,4 +29,6 @@
 
 ## APK 위치
 
-`apk/팀명_앱이름_release.apk` (제출 전 release 빌드로 채운다)
+`apk/PedalGuardian_release.apk` (release 빌드)
+
+설치: `adb install apk/PedalGuardian_release.apk`
