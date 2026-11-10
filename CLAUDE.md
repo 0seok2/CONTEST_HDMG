@@ -63,9 +63,11 @@
 - Android Studio(최신), **Kotlin**, minSdk **28 이상**, Gradle **8.0 이상**
 - **Pleos Connect Emulator** (AAOS 기반, API Level 34 시스템 이미지)
   - SDK Manager → SDK Update Sites → 아래 URL 추가
-    - x86_64: `https://nexus-playground.pleos.ai/repository/raw-releases/release/connect.v2.0.5/connect.v2.0.5_avd_x86_64/crp-sys-img.xml`
-    - arm64: `https://nexus-playground.pleos.ai/repository/raw-releases/release/connect.v2.0.5/connect.v2.0.5_avd_arm64/crp-arm64-sys-img.xml`
-  - Device Manager → Automotive → **Pleos Connect v2.0** 선택
+    - Windows/Linux(x86_64): `https://nexus-playground.pleos.ai/repository/raw-releases/connect-avd/2.x/crp-sys-img.xml`
+    - Mac(arm64): `https://nexus-playground.pleos.ai/repository/raw-releases/connect-avd/2.x/crp-arm64-sys-img.xml`
+    - (옛 connect.v2.0.5 주소는 404. 11/10 공식 문서로 확인)
+  - SDK Platforms → Show Package Details → API 34 아래 Pleos Connect System Image 체크 → 설치 후 Android Studio 재시작
+  - Device Manager → Create device → Automotive → **Pleos Connect v2.1.0** 선택, RAM 4GB
   - Graphics는 **Hardware**, Boot는 **Cold boot** (Quick boot로 하면 VHAL을 쓸 수 없다)
 - **CRN 주입 필수**: Pleos Playground에서 My Project를 만들고, Project Info > Test Info의 CRN을 복사해서 넣는다.
   ```bash
